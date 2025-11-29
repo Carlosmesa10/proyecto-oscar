@@ -346,101 +346,110 @@
     </main>
 
     <script>
-      const API_URL = "https://proyecto-oscar-production.up.railway.app";
+      const API_URL = 'https://proyecto-oscar-production.up.railway.app';
 
-      let authToken = localStorage.getItem("token");
+      let authToken = localStorage.getItem('token');
       let currentUser = null;
       try {
-        const savedUser = localStorage.getItem("user");
+        const savedUser = localStorage.getItem('user');
         currentUser = savedUser ? JSON.parse(savedUser) : null;
       } catch {
         currentUser = null;
       }
 
-      const productsContainer = document.getElementById("products-container");
-      const productsEmpty = document.getElementById("products-empty");
+      const productsContainer = document.getElementById('products-container');
+      const productsEmpty = document.getElementById('products-empty');
 
-      const userInfo = document.getElementById("user-info");
-      const btnOpenLogin = document.getElementById("btn-open-login");
-      const btnOpenRegister = document.getElementById("btn-open-register");
-      const btnLogout = document.getElementById("btn-logout");
+      const userInfo = document.getElementById('user-info');
+      const btnOpenLogin = document.getElementById('btn-open-login');
+      const btnOpenRegister = document.getElementById('btn-open-register');
+      const btnLogout = document.getElementById('btn-logout');
 
-      const authTitle = document.getElementById("auth-title");
-      const loginForm = document.getElementById("login-form");
-      const loginError = document.getElementById("login-error");
-      const registerForm = document.getElementById("register-form");
-      const registerError = document.getElementById("register-error");
-      const registerSuccess = document.getElementById("register-success");
+      const authTitle = document.getElementById('auth-title');
+      const loginForm = document.getElementById('login-form');
+      const loginError = document.getElementById('login-error');
+      const registerForm = document.getElementById('register-form');
+      const registerError = document.getElementById('register-error');
+      const registerSuccess = document.getElementById('register-success');
 
-      const btnNewProduct = document.getElementById("btn-new-product");
-      const productFormTitle = document.getElementById("product-form-title");
-      const productFormModeLabel = document.getElementById("product-form-mode-label");
-      const productForm = document.getElementById("product-form");
-      const productIdInput = document.getElementById("product-id");
-      const productNameInput = document.getElementById("product-name");
-      const productDescriptionInput = document.getElementById("product-description");
-      const productPriceInput = document.getElementById("product-price");
-      const productImageInput = document.getElementById("product-image");
-      const productFormError = document.getElementById("product-form-error");
-      const productFormSuccess = document.getElementById("product-form-success");
-      const productCancelBtn = document.getElementById("product-cancel-btn");
+      const btnNewProduct = document.getElementById('btn-new-product');
+      const productFormTitle = document.getElementById('product-form-title');
+      const productFormModeLabel = document.getElementById(
+        'product-form-mode-label',
+      );
+      const productForm = document.getElementById('product-form');
+      const productIdInput = document.getElementById('product-id');
+      const productNameInput = document.getElementById('product-name');
+      const productDescriptionInput = document.getElementById(
+        'product-description',
+      );
+      const productPriceInput = document.getElementById('product-price');
+      const productImageInput = document.getElementById('product-image');
+      const productFormError = document.getElementById('product-form-error');
+      const productFormSuccess = document.getElementById(
+        'product-form-success',
+      );
+      const productCancelBtn = document.getElementById('product-cancel-btn');
 
       function updateAuthUI() {
         if (authToken && currentUser) {
           userInfo.textContent = `Conectado como ${currentUser.name} (${currentUser.email})`;
-          btnLogout.style.display = "inline-flex";
-          btnOpenLogin.style.display = "none";
-          btnOpenRegister.style.display = "none";
+          btnLogout.style.display = 'inline-flex';
+          btnOpenLogin.style.display = 'none';
+          btnOpenRegister.style.display = 'none';
         } else {
-          userInfo.textContent = "No has iniciado sesión";
-          btnLogout.style.display = "none";
-          btnOpenLogin.style.display = "inline-flex";
-          btnOpenRegister.style.display = "inline-flex";
+          userInfo.textContent = 'No has iniciado sesión';
+          btnLogout.style.display = 'none';
+          btnOpenLogin.style.display = 'inline-flex';
+          btnOpenRegister.style.display = 'inline-flex';
         }
       }
 
       function setAuth(token, user) {
         authToken = token;
         currentUser = user;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
         updateAuthUI();
       }
 
       function clearAuth() {
         authToken = null;
         currentUser = null;
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         updateAuthUI();
       }
 
       function setAuthMode(mode) {
-        if (mode === "login") {
-          authTitle.textContent = "Iniciar sesión";
-          loginForm.style.display = "flex";
-          registerForm.style.display = "none";
+        if (mode === 'login') {
+          authTitle.textContent = 'Iniciar sesión';
+          loginForm.style.display = 'flex';
+          registerForm.style.display = 'none';
         } else {
-          authTitle.textContent = "Crear cuenta";
-          loginForm.style.display = "none";
-          registerForm.style.display = "flex";
+          authTitle.textContent = 'Crear cuenta';
+          loginForm.style.display = 'none';
+          registerForm.style.display = 'flex';
         }
-        loginError.textContent = "";
-        registerError.textContent = "";
-        registerSuccess.textContent = "";
+        loginError.textContent = '';
+        registerError.textContent = '';
+        registerSuccess.textContent = '';
       }
 
-      btnOpenLogin.addEventListener("click", () => setAuthMode("login"));
-      btnOpenRegister.addEventListener("click", () => setAuthMode("register"));
+      btnOpenLogin.addEventListener('click', () => setAuthMode('login'));
+      btnOpenRegister.addEventListener('click', () => setAuthMode('register'));
 
-      btnLogout.addEventListener("click", () => {
+      btnLogout.addEventListener('click', () => {
         clearAuth();
       });
 
       async function fetchJSON(path, options = {}, needAuth = false) {
-        const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
+        const headers = {
+          'Content-Type': 'application/json',
+          ...(options.headers || {}),
+        };
         if (needAuth && authToken) {
-          headers["Authorization"] = "Bearer " + authToken;
+          headers['Authorization'] = 'Bearer ' + authToken;
         }
 
         const res = await fetch(API_URL + path, {
@@ -449,11 +458,13 @@
         });
 
         if (!res.ok) {
-          let message = "Error HTTP " + res.status;
+          let message = 'Error HTTP ' + res.status;
           try {
             const data = await res.json();
             if (data && data.message) {
-              message = Array.isArray(data.message) ? data.message.join(", ") : data.message;
+              message = Array.isArray(data.message)
+                ? data.message.join(', ')
+                : data.message;
             }
           } catch {}
           throw new Error(message);
@@ -463,65 +474,65 @@
       }
 
       async function loadProducts() {
-        productsContainer.innerHTML = "<p>Cargando...</p>";
-        productsEmpty.style.display = "none";
+        productsContainer.innerHTML = '<p>Cargando...</p>';
+        productsEmpty.style.display = 'none';
         try {
-          const products = await fetchJSON("/products");
-          productsContainer.innerHTML = "";
+          const products = await fetchJSON('/products');
+          productsContainer.innerHTML = '';
           if (!products.length) {
-            productsEmpty.style.display = "block";
+            productsEmpty.style.display = 'block';
             return;
           }
           products.forEach((p) => {
-            const card = document.createElement("article");
-            card.className = "card";
+            const card = document.createElement('article');
+            card.className = 'card';
 
             if (p.imageUrl) {
-              const img = document.createElement("img");
+              const img = document.createElement('img');
               img.src = p.imageUrl;
               img.alt = p.name;
               card.appendChild(img);
             }
 
-            const title = document.createElement("h3");
+            const title = document.createElement('h3');
             title.textContent = p.name;
             card.appendChild(title);
 
-            const desc = document.createElement("p");
+            const desc = document.createElement('p');
             desc.textContent = p.description;
             card.appendChild(desc);
 
-            const price = document.createElement("p");
-            price.className = "price";
-            price.textContent = "$" + Number(p.price).toFixed(2);
+            const price = document.createElement('p');
+            price.className = 'price';
+            price.textContent = '$' + Number(p.price).toFixed(2);
             card.appendChild(price);
 
             if (p.owner) {
-              const owner = document.createElement("p");
-              owner.className = "owner";
+              const owner = document.createElement('p');
+              owner.className = 'owner';
               owner.textContent = `Publicado por ${p.owner.name} (${p.owner.email})`;
               card.appendChild(owner);
             }
 
-            const actions = document.createElement("div");
-            actions.style.display = "flex";
-            actions.style.gap = "0.5rem";
-            actions.style.marginTop = "0.5rem";
+            const actions = document.createElement('div');
+            actions.style.display = 'flex';
+            actions.style.gap = '0.5rem';
+            actions.style.marginTop = '0.5rem';
 
             if (authToken) {
-              const editBtn = document.createElement("button");
-              editBtn.textContent = "Editar";
-              editBtn.className = "btn btn-secondary";
-              editBtn.addEventListener("click", () => {
+              const editBtn = document.createElement('button');
+              editBtn.textContent = 'Editar';
+              editBtn.className = 'btn btn-secondary';
+              editBtn.addEventListener('click', () => {
                 enterEditMode(p);
               });
               actions.appendChild(editBtn);
 
-              const deleteBtn = document.createElement("button");
-              deleteBtn.textContent = "Eliminar";
-              deleteBtn.className = "btn btn-danger";
-              deleteBtn.addEventListener("click", () => {
-                if (confirm("¿Eliminar este producto?")) {
+              const deleteBtn = document.createElement('button');
+              deleteBtn.textContent = 'Eliminar';
+              deleteBtn.className = 'btn btn-danger';
+              deleteBtn.addEventListener('click', () => {
+                if (confirm('¿Eliminar este producto?')) {
                   deleteProduct(p.id);
                 }
               });
@@ -533,58 +544,61 @@
           });
         } catch (err) {
           productsContainer.innerHTML =
-            "<p style='color:#b91c1c;'>Error al cargar productos: " + err.message + "</p>";
+            "<p style='color:#b91c1c;'>Error al cargar productos: " +
+            err.message +
+            '</p>';
         }
       }
 
-      loginForm.addEventListener("submit", async (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        loginError.textContent = "";
-        const email = (document.getElementById("login-email") as HTMLInputElement).value;
-        const password = (document.getElementById("login-password") as HTMLInputElement).value;
+        loginError.textContent = '';
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
 
         try {
-          const data = await fetchJSON("/auth/login", {
-            method: "POST",
+          const data = await fetchJSON('/auth/login', {
+            method: 'POST',
             body: JSON.stringify({ email, password }),
           });
           setAuth(data.token, data.user);
-          loginError.textContent = "";
+          loginError.textContent = '';
         } catch (err) {
           loginError.textContent = err.message;
         }
       });
 
-      registerForm.addEventListener("submit", async (e) => {
+      registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        registerError.textContent = "";
-        registerSuccess.textContent = "";
-        const name = (document.getElementById("reg-name") as HTMLInputElement).value;
-        const email = (document.getElementById("reg-email") as HTMLInputElement).value;
-        const password = (document.getElementById("reg-password") as HTMLInputElement).value;
+        registerError.textContent = '';
+        registerSuccess.textContent = '';
+        const name = document.getElementById('reg-name').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
 
         try {
-          await fetchJSON("/auth/register", {
-            method: "POST",
+          await fetchJSON('/auth/register', {
+            method: 'POST',
             body: JSON.stringify({ name, email, password }),
           });
-          registerSuccess.textContent = "Cuenta creada. Ahora puedes iniciar sesión.";
-          registerError.textContent = "";
+          registerSuccess.textContent =
+            'Cuenta creada. Ahora puedes iniciar sesión.';
+          registerError.textContent = '';
         } catch (err) {
           registerError.textContent = err.message;
         }
       });
 
       function resetProductForm() {
-        productIdInput.value = "";
-        productNameInput.value = "";
-        productDescriptionInput.value = "";
-        productPriceInput.value = "";
-        productImageInput.value = "";
-        productFormTitle.textContent = "Crear producto";
-        productFormModeLabel.textContent = "Modo: crear";
-        productFormError.textContent = "";
-        productFormSuccess.textContent = "";
+        productIdInput.value = '';
+        productNameInput.value = '';
+        productDescriptionInput.value = '';
+        productPriceInput.value = '';
+        productImageInput.value = '';
+        productFormTitle.textContent = 'Crear producto';
+        productFormModeLabel.textContent = 'Modo: crear';
+        productFormError.textContent = '';
+        productFormSuccess.textContent = '';
       }
 
       function enterEditMode(p) {
@@ -592,35 +606,36 @@
         productNameInput.value = p.name;
         productDescriptionInput.value = p.description;
         productPriceInput.value = p.price;
-        productImageInput.value = p.imageUrl || "";
-        productFormTitle.textContent = "Editar producto";
-        productFormModeLabel.textContent = "Modo: editar";
-        productFormError.textContent = "";
-        productFormSuccess.textContent = "";
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        productImageInput.value = p.imageUrl || '';
+        productFormTitle.textContent = 'Editar producto';
+        productFormModeLabel.textContent = 'Modo: editar';
+        productFormError.textContent = '';
+        productFormSuccess.textContent = '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      btnNewProduct.addEventListener("click", () => {
+      btnNewProduct.addEventListener('click', () => {
         if (!authToken) {
-          alert("Debes iniciar sesión para crear productos.");
-          setAuthMode("login");
+          alert('Debes iniciar sesión para crear productos.');
+          setAuthMode('login');
           return;
         }
         resetProductForm();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      productCancelBtn.addEventListener("click", () => {
+      productCancelBtn.addEventListener('click', () => {
         resetProductForm();
       });
 
-      productForm.addEventListener("submit", async (e) => {
+      productForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        productFormError.textContent = "";
-        productFormSuccess.textContent = "";
+        productFormError.textContent = '';
+        productFormSuccess.textContent = '';
 
         if (!authToken) {
-          productFormError.textContent = "Debes iniciar sesión para crear o editar productos.";
+          productFormError.textContent =
+            'Debes iniciar sesión para crear o editar productos.';
           return;
         }
 
@@ -634,17 +649,26 @@
 
         try {
           if (id) {
-            await fetchJSON("/products/" + id, {
-              method: "PUT",
-              body: JSON.stringify(data),
-            }, true);
-            productFormSuccess.textContent = "Producto actualizado correctamente.";
+            await fetchJSON(
+              '/products/' + id,
+              {
+                method: 'PUT',
+                body: JSON.stringify(data),
+              },
+              true,
+            );
+            productFormSuccess.textContent =
+              'Producto actualizado correctamente.';
           } else {
-            await fetchJSON("/products", {
-              method: "POST",
-              body: JSON.stringify(data),
-            }, true);
-            productFormSuccess.textContent = "Producto creado correctamente.";
+            await fetchJSON(
+              '/products',
+              {
+                method: 'POST',
+                body: JSON.stringify(data),
+              },
+              true,
+            );
+            productFormSuccess.textContent = 'Producto creado correctamente.';
           }
           resetProductForm();
           loadProducts();
@@ -655,15 +679,15 @@
 
       async function deleteProduct(id) {
         try {
-          await fetchJSON("/products/" + id, { method: "DELETE" }, true);
+          await fetchJSON('/products/' + id, { method: 'DELETE' }, true);
           loadProducts();
         } catch (err) {
-          alert("Error al eliminar: " + err.message);
+          alert('Error al eliminar: ' + err.message);
         }
       }
 
       updateAuthUI();
-      setAuthMode("login");
+      setAuthMode('login');
       loadProducts();
     </script>
   </body>
